@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    container_name: activities-postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - activities-data:/var/lib/postgresql/data/data
+      - ./init:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_USER: ${ACTIVITIES_DB_USERNAME}
+      POSTGRES_PASSWORD: ${ACTIVITIES_DB_PASSWORD}
+      POSTGRES_DB: ${ACTIVITIES_DB_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    networks:
+      - activities-network
+    env_file:
+      - .env
+
+volumes:
+  activities-data:
+
+networks:
+  activities-network:
+    driver: bridge
