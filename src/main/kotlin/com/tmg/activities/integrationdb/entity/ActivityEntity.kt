@@ -1,31 +1,45 @@
 package com.tmg.activities.integrationdb.entity
 
 import com.tmg.activities.integrationdb.domain.ActivityType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
+import java.lang.Math.floor
 import java.time.Instant
 import java.util.UUID
-import kotlin.math.floor
 
-//@Entity
-//@Table(name = "activities")
+@Entity
+@Table(name = "activities", schema = "activities")
 class ActivityEntity(
 
-//    @Id
-    var id: UUID,
+    @Id
+    @GeneratedValue
+    var id: UUID?,
 
-    var distance: Double,
+    @NotNull
+    @Size(max = 6)
+    @Column(name = "distance", nullable = false)
+    var distance: Int,
 
-//    @NotNull
-//    @Size(max = 6)
-//    @Column(name = "time", length = 8, nullable = false)
-    var time: Int,
+    @NotNull
+    @Size(max = 6)
+    @Column(name = "total_time", nullable = false)
+    var totalTime: Int,
 
-//    @NotNull
-//    @Column(name = "date", nullable = false)
+    @NotNull
+    @Column(name = "activity_date", nullable = false)
     var date: Instant,
 
-//    @NotBlank
-//    @JdbcTypeCode(SqlTypes.JSON)
-//    @Column(name = "activity_type", columnDefinition = "jsonb", nullable = false)
+    @NotBlank
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_type")
     var type: ActivityType
 ) {
     val avgPace: Double
@@ -34,7 +48,7 @@ class ActivityEntity(
         }
     val avgSpeed: Double
         get() {
-            val d = (distance / time) * 3600
+            val d = (distance / totalTime) * 3600
             return floor(d * 100.0) / 100.0
         }
 }

@@ -1,6 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
 spring:
   application:
-    name: migration-example
+    name: activities
   docker:
     compose:
       file: ./postgres/docker-compose.yaml
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/activities?currentSchema=activities"
+    username: tmg
+    password: tmg
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        types:
+          print:
+            banner: false
+  liquibase:
+    enabled: true
+    change-log: classpath:liquibase/changelog-master.yml
+    default-schema: activities
