@@ -27,7 +27,7 @@ dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 //	implementation("org.liquibase:liquibase-core")
 
-//	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
 	runtimeOnly("org.postgresql:postgresql")
 
