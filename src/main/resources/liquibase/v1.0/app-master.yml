@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: changelog/001-init-application.sql
+  - include:
+      relativeToChangelogFile: true
+      file: changelog/002-create-activities-tables.sql
