@@ -4,10 +4,13 @@ import com.tmg.activities.integrationdb.dao.ActivitiesDao
 import com.tmg.activities.integrationdb.domain.Activity
 import com.tmg.activities.integrationdb.domain.ActivityType
 import com.tmg.activities.integrationdb.entity.ActivityEntity
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
+import java.util.UUID
 
 @RestController
 @RequestMapping("activities")
@@ -27,6 +30,14 @@ class ActivityController(private val dao: ActivitiesDao) {
         return entities.stream()
             .map { entityToDtoConverter(it) }
             .toList()
+    }
+
+    @GetMapping("/{id}")
+    fun getActivity(@PathVariable id: UUID): ResponseEntity<Activity> {
+        val activity = dao.findById(id)
+            .map { entityToDtoConverter(it) }
+            .orElseThrow()
+        return ResponseEntity.ok(activity)
     }
 
     fun entityToDtoConverter(entity: ActivityEntity): Activity = Activity(
