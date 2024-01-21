@@ -5,6 +5,7 @@ import com.tmg.activities.integrationdb.domain.Activity
 import com.tmg.activities.integrationdb.domain.ActivityType
 import com.tmg.activities.integrationdb.entity.ActivityEntity
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,6 +39,12 @@ class ActivityController(private val dao: ActivitiesDao) {
             .map { entityToDtoConverter(it) }
             .orElseThrow()
         return ResponseEntity.ok(activity)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteActivity(@PathVariable id: UUID): ResponseEntity<Void> {
+        dao.deleteById(id)
+        return ResponseEntity.noContent().build()
     }
 
     fun entityToDtoConverter(entity: ActivityEntity): Activity = Activity(
