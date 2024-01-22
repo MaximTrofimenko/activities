@@ -1,13 +1,17 @@
 package com.tmg.activities.controllers
 
+import com.tmg.activities.exceptions.NotFoundException
 import com.tmg.activities.integrationdb.dao.ActivitiesDao
 import com.tmg.activities.integrationdb.domain.Activity
 import com.tmg.activities.integrationdb.domain.ActivityType
 import com.tmg.activities.integrationdb.entity.ActivityEntity
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -37,7 +41,7 @@ class ActivityController(private val dao: ActivitiesDao) {
     fun getActivity(@PathVariable id: UUID): ResponseEntity<Activity> {
         val activity = dao.findById(id)
             .map { entityToDtoConverter(it) }
-            .orElseThrow()
+            .orElseThrow<NotFoundException> { throw NotFoundException("Не найден в базе объект с id = $id") }
         return ResponseEntity.ok(activity)
     }
 
@@ -45,6 +49,12 @@ class ActivityController(private val dao: ActivitiesDao) {
     fun deleteActivity(@PathVariable id: UUID): ResponseEntity<Void> {
         dao.deleteById(id)
         return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping
+    fun addActivity(@RequestBody activity: Activity): ResponseEntity<Void> {
+        dao.save(dtoToEntityConverter(activity))
+        return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     fun entityToDtoConverter(entity: ActivityEntity): Activity = Activity(
@@ -55,5 +65,13 @@ class ActivityController(private val dao: ActivitiesDao) {
         entity.avgSpeed,
         entity.date,
         entity.type
+    )
+
+    fun dtoToEntityConverter(activity: Activity): ActivityEntity = ActivityEntity(
+        null,
+        activity.distance,
+        activity.totalTime,
+        activity.date,
+        activity.type
     )
 }
