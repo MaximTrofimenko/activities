@@ -1,10 +1,7 @@
 package com.tmg.activities.controllers
 
-import com.tmg.activities.exceptions.NotFoundException
-import com.tmg.activities.integrationdb.dao.ActivitiesDao
 import com.tmg.activities.integrationdb.domain.Activity
-import com.tmg.activities.integrationdb.domain.ActivityType
-import com.tmg.activities.integrationdb.entity.ActivityEntity
+import com.tmg.activities.services.impl.ActivityService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,64 +11,44 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
 import java.util.UUID
 
 @RestController
 @RequestMapping("activities")
-class ActivityController(private val dao: ActivitiesDao) {
+class ActivityController(private val activityService: ActivityService) {
 
     @GetMapping
     fun getAll(): List<Activity> {
-
-        val activityEntity = ActivityEntity(null, 7370, 3671, Instant.now(), ActivityType.RUN)
-        val activityEntity2 = ActivityEntity(null, 6900, 3670, Instant.now(), ActivityType.SKI_CLASSIC)
-
-        dao.save(activityEntity)
-        dao.save(activityEntity2)
-
-        val entities = dao.findAll()
-
-        return entities.stream()
-            .map { entityToDtoConverter(it) }
-            .toList()
+        return activityService.getAll()
     }
 
     @GetMapping("/{id}")
-    fun getActivity(@PathVariable id: UUID): ResponseEntity<Activity> {
-        val activity = dao.findById(id)
-            .map { entityToDtoConverter(it) }
-            .orElseThrow<NotFoundException> { throw NotFoundException("Не найден в базе объект с id = $id") }
-        return ResponseEntity.ok(activity)
+    fun getActivityById(@PathVariable id: UUID): ResponseEntity<Activity> {
+        val activityById = activityService.getById(id)
+        return ResponseEntity.ok(activityById)
     }
 
     @DeleteMapping("/{id}")
     fun deleteActivity(@PathVariable id: UUID): ResponseEntity<Void> {
-        dao.deleteById(id)
+        activityService.deleteActivity(id)
         return ResponseEntity.noContent().build()
     }
 
+//    @PostMapping
+//    fun addActivity(@RequestBody activity: Activity, response: HttpServletResponse): ResponseEntity<Void> {
+//        val addActivity = activityService.addActivity(activity)
+//        response.setHeader(
+//            "Location", ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/activities/" + addActivity.id.toString())
+//                .toUriString()
+//        )
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).build()
+//    }
+
     @PostMapping
-    fun addActivity(@RequestBody activity: Activity): ResponseEntity<Void> {
-        dao.save(dtoToEntityConverter(activity))
-        return ResponseEntity.status(HttpStatus.CREATED).build()
+    fun addActivity(@RequestBody activity: Activity): ResponseEntity<UUID> {
+        val addActivity = activityService.addActivity(activity)
+        return ResponseEntity(addActivity.id, HttpStatus.CREATED)
     }
-
-    fun entityToDtoConverter(entity: ActivityEntity): Activity = Activity(
-        entity.id,
-        entity.distance,
-        entity.totalTime,
-        entity.avgPace,
-        entity.avgSpeed,
-        entity.date,
-        entity.type
-    )
-
-    fun dtoToEntityConverter(activity: Activity): ActivityEntity = ActivityEntity(
-        null,
-        activity.distance,
-        activity.totalTime,
-        activity.date,
-        activity.type
-    )
 }
