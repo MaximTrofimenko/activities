@@ -1,4 +1,4 @@
-package com.tmg.activities.services.impl
+package com.tmg.activities.services
 
 import com.tmg.activities.integrationdb.domain.Activity
 import java.util.UUID

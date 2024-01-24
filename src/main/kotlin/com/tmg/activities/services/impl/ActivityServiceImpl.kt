@@ -1,10 +1,10 @@
-package com.tmg.activities.services
+package com.tmg.activities.services.impl
 
 import com.tmg.activities.exceptions.NotFoundException
 import com.tmg.activities.integrationdb.dao.ActivitiesDao
 import com.tmg.activities.integrationdb.domain.Activity
 import com.tmg.activities.integrationdb.entity.ActivityEntity
-import com.tmg.activities.services.impl.ActivityService
+import com.tmg.activities.services.ActivityService
 import com.tmg.activities.util.LoggerMain
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -15,9 +15,11 @@ class ActivityServiceImpl(private val dao: ActivitiesDao) : ActivityService {
     private val log by LoggerMain()
 
     override fun getAll(): List<Activity> {
-        return dao.findAll().stream()
+        val activities = dao.findAll().stream()
             .map { entityToDtoConverter(it) }
             .toList()
+        log.info("Всего найдено ${activities.size} активностей")
+        return activities
     }
 
     override fun addActivity(activity: Activity): Activity {
