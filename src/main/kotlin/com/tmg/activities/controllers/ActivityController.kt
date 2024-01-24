@@ -1,7 +1,7 @@
 package com.tmg.activities.controllers
 
 import com.tmg.activities.integrationdb.domain.Activity
-import com.tmg.activities.services.impl.ActivityService
+import com.tmg.activities.services.ActivityService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
