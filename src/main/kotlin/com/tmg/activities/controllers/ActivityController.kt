@@ -1,6 +1,7 @@
 package com.tmg.activities.controllers
 
-import com.tmg.activities.integrationdb.domain.Activity
+import com.tmg.activities.integrationdb.domain.ActivityRsDto
+import com.tmg.activities.integrationdb.domain.ActivityRqDto
 import com.tmg.activities.services.ActivityService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,12 +19,12 @@ import java.util.UUID
 class ActivityController(private val activityService: ActivityService) {
 
     @GetMapping
-    fun getAll(): List<Activity> {
+    fun getAll(): List<ActivityRsDto> {
         return activityService.getAll()
     }
 
     @GetMapping("/{id}")
-    fun getActivityById(@PathVariable id: UUID): ResponseEntity<Activity> {
+    fun getActivityById(@PathVariable id: UUID): ResponseEntity<ActivityRsDto> {
         val activityById = activityService.getById(id)
         return ResponseEntity.ok(activityById)
     }
@@ -47,7 +48,7 @@ class ActivityController(private val activityService: ActivityService) {
 //    }
 
     @PostMapping
-    fun addActivity(@RequestBody activity: Activity): ResponseEntity<UUID> {
+    fun addActivity(@RequestBody activity: ActivityRqDto): ResponseEntity<UUID> {
         val addActivity = activityService.addActivity(activity)
         return ResponseEntity(addActivity.id, HttpStatus.CREATED)
     }

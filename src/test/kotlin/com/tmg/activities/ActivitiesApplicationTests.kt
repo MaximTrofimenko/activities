@@ -1,13 +1,15 @@
 package com.tmg.activities
 
+import com.tmg.activities.util.getPrettyAvgPace
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
 class ActivitiesApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
-
+    @Test
+    fun getPrettyAvgPaceTest() {
+        val pace = 489
+        val prettyAvgPace = getPrettyAvgPace(pace)
+        assertThat(prettyAvgPace).isEqualTo("8:09 км/ч")
+    }
 }
