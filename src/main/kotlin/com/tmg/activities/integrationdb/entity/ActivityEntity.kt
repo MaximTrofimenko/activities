@@ -11,7 +11,6 @@ import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
-import java.lang.Math.floor
 import java.time.Instant
 import java.util.UUID
 
@@ -21,7 +20,7 @@ class ActivityEntity(
 
     @Id
     @GeneratedValue
-    var id: UUID?,
+    var id: UUID? = null,
 
     @NotNull
     @Size(max = 6)
@@ -46,9 +45,10 @@ class ActivityEntity(
         get() {
             return 0.0
         }
-    val avgSpeed: Double
+    val avgSpeed: String
         get() {
-            val d = (distance / totalTime) * 3600
-            return floor(d * 100.0) / 100.0
+            val number = (distance.toDouble() / totalTime.toDouble()) * 3.6
+            val format = String.format("%.2f", number)
+            return "$format км/ч"
         }
 }
