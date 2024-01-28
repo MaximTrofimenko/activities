@@ -14,9 +14,9 @@ data class ActivityRsDto(
     val id: UUID?,
     val distance: Int,
     val totalTime: Int,
-    var avgPace: String,
-    val avgSpeed: Double,
+    var avgPace: String? = null,
+    val avgSpeed: String,
     val date: Instant,
     val type: ActivityType,
-    var kindOfRun: String
+    var kindOfRun: String? = null
 )

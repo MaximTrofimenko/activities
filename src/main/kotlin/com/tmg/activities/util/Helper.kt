@@ -10,7 +10,7 @@ fun getPrettyAvgPace(pace: Int): String {
     }
     str.append(sec)
 
-    return "$minute:$str км/ч"
+    return "$minute:$str мин/км"
 }
 
 //скорость в м/сек
@@ -24,13 +24,10 @@ fun getPace(speed: Double): Int {
 
 fun getKindOfRun(distance: Int, time: Int): String {
     val speed = getSpeed(distance, time)
-    val pace = getPace(speed)
-
-    return if (pace <= 330) {
-        "sprint"
-    } else if (pace < 480) {
-        "run"
-    } else {
-        "jog"
+    return when (getPace(speed)) {
+        in 0..330 -> "sprint"
+        in 331..480 -> "run"
+        in 481..700 -> "jog"
+        else -> "Wrong pace"
     }
 }
