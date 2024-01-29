@@ -1,5 +1,7 @@
 package com.tmg.activities.util
 
+import com.tmg.activities.integrationdb.domain.ActivityRsDto
+
 fun getPrettyAvgPace(pace: Int): String {
     val minute = pace / 60
     val sec = pace % 60
@@ -29,5 +31,11 @@ fun getKindOfRun(distance: Int, time: Int): String {
         in 331..480 -> "run"
         in 481..700 -> "jog"
         else -> "Wrong pace"
+    }
+}
+
+object CaseInsensitiveFileComparator : Comparator<ActivityRsDto> {
+    override fun compare(activity1: ActivityRsDto, activity2: ActivityRsDto): Int {
+        return activity1.totalTime.compareTo(activity2.totalTime)
     }
 }
