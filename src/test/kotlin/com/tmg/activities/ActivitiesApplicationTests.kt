@@ -30,7 +30,7 @@ class ActivitiesApplicationTests {
         )
 
         val activityRsDto2 = ActivityRsDto(
-            distance = 1000,
+            distance = 10000,
             totalTime = 1000,
             avgSpeed = "46",
             date = Instant.now(),
@@ -38,7 +38,27 @@ class ActivitiesApplicationTests {
             id = null
         )
 
+        val toList = listOf(1, 2, 3, 4).asSequence().map { it + 3 }.filter { it > 5 }.toList()
+
+
+        val listOf = listOf(activityRsDto1, activityRsDto2)
+
+        val filter = listOf
+            .map {
+                it.distance
+
+            }
+            .filter { it == 1000 }
+
+
         val compare = CaseInsensitiveFileComparator.compare(activityRsDto1, activityRsDto2)
         println(compare)
+
+
+        val objects = ArrayList<Int>()
+        val integers = objects.stream()
+            .map { it + 5 }
+            .filter { it > 5 }
+            .toList()
     }
 }
