@@ -2,17 +2,46 @@ package com.tmg.activities.util
 
 import com.tmg.activities.integrationdb.domain.ActivityRsDto
 
+/**
+ * Функция with возвращает результат выполнения лямбда-выражения - результат последнего выражения в теле лямбда-функции.
+ * Результатом вызова - результат выполнения лямбда-выражения.
+ */
 fun getPrettyAvgPace(pace: Int): String {
     val minute = pace / 60
     val sec = pace % 60
 
-    val str = StringBuilder()
-    if (sec < 10) {
-        str.append("0")
+    val stringBuilder = StringBuilder()
+    return with(stringBuilder) {
+        if (sec < 10) {
+            stringBuilder.append("0")
+        }
+        stringBuilder.append(sec)
+        "$minute:$stringBuilder мин/км"
     }
-    str.append(sec)
+}
 
-    return "$minute:$str мин/км"
+/**
+ * Более полное использование специальной функции with.
+ * Слово this. можно опустить
+ */
+fun getPrettyAvgPace2(pace: Int) = with(StringBuilder()) {
+    val minute = pace / 60
+    val sec = pace % 60
+    if (sec < 10) {
+        this.append("0")
+    }
+    this.append(sec)
+    "$minute:$this мин/км"
+}
+
+/**
+ * Отличный пример StringBuilder в котлиновском варианте
+ */
+fun alphabet() = buildString {
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nNow I know the alphabet!")
 }
 
 //скорость в м/сек

@@ -14,6 +14,10 @@ import jakarta.validation.constraints.Size
 import java.time.Instant
 import java.util.UUID
 
+/**
+ * Нельзя создать класс без параметров (то есть с пустым конструктором)
+ * Но какже с entity?
+ */
 @Entity
 @Table(name = "activities", schema = "activities")
 class ActivityEntity(
