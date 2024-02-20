@@ -68,3 +68,52 @@ object CaseInsensitiveFileComparator : Comparator<ActivityRsDto> {
         return activity1.totalTime.compareTo(activity2.totalTime)
     }
 }
+//Все про null
+
+//1. если позволить переменной быть null то ставим ?
+var avgPace: String? = null
+
+//2. оператор безопасного вызова
+//если значение, метод которого вы пытаетесь вызвать, не является null, то вызов будет выполнен обычным образом.
+//Если значение равно null, вызов игнорируется, и в качестве результата возвращается null.
+fun printAllCaps(str: String?) {
+    val allCaps: String? = str?.uppercase() //оператор безопасного вызова
+    println(allCaps)
+}
+
+//3. Элвис
+//как и предыдущий но вместо null подставляется дефолтное значение
+fun foo(str: String?) {
+    val t: String = str
+        ?: "" // оператор элвис, если переменная s равна null то вернем "", подставляет конкретное значение вместо nuLL!!!
+    println(t)
+}
+
+fun strLenSafe(str: String?): Int = str?.length ?: 0
+
+//4. Вызвать ошибку в случае null
+// Принудительно хочу вызвать NPE если прийдет null !!
+//Я знаю, что знаю что значение не равно null, и я готов получить исключение, если выяснится, что я ошибаюсь
+fun ignoreNulls(s: String?) {
+    val sNotNull: String = s!!
+    println(sNotNull.length)
+}
+
+//5. Если переменная пришла не null то выражение в круглых скобках выполнится - очень удобно
+//rpsAverage?.let {
+//    request.loadParameters(
+//        mapOf(
+//            RPS_AVERAGE to it,
+//            MSG_AVERAGE_SIZE to 1.0
+//        )
+//    )
+//}
+
+
+//6. полезная проверка на null строки
+fun verifyUserInput(input: String?) {
+    if (input.isNullOrBlank()) {
+        println("Please fill in the required fields")
+    }
+}
+
