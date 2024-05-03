@@ -3,6 +3,7 @@ package com.tmg.activities
 import com.tmg.activities.integrationdb.domain.ActivityRsDto
 import com.tmg.activities.integrationdb.domain.ActivityType
 import com.tmg.activities.integrationdb.entity.ActivityEntity
+import com.tmg.activities.services.impl.User
 import com.tmg.activities.util.CaseInsensitiveFileComparator
 import com.tmg.activities.util.alphabet
 import com.tmg.activities.util.getPrettyAvgPace
@@ -17,7 +18,7 @@ class ActivitiesApplicationTests {
     fun getPrettyAvgPaceTest() {
         val pace = 489
         val prettyAvgPace = getPrettyAvgPace(pace)
-        assertThat(prettyAvgPace).isEqualTo("8:09 км/ч")
+        assertThat(prettyAvgPace).isEqualTo("8:09 мин/км")
     }
 
     @Test
@@ -70,6 +71,11 @@ class ActivitiesApplicationTests {
             .filter { it > 5 }
             .toList()
 
+        //хороший пример инициализации юзера
+        val user = User(mapOf("name" to "max", "age" to 43 ))
+
         println(alphabet())
+        println(user.map)
+        println(user.age)
     }
 }
